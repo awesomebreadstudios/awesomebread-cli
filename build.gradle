@@ -1,0 +1,29 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		maven {
+			credentials {
+				username mavenUser
+				password mavenPassword
+			}
+
+			url "http://pi.doom:8000/repository/releases"
+			allowInsecureProtocol = true
+		}
+		gradlePluginPortal()
+	}
+
+	configurations.all {
+		resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
+	}
+
+	dependencies {
+		classpath "com.awesomebread.common.gradle.plugin:core-plugin:0.0.+"
+	}
+}
+
+apply plugin: "com.awesomebread.common.core"
+
+subprojects {
+	apply plugin: "com.awesomebread.common.core"
+}
