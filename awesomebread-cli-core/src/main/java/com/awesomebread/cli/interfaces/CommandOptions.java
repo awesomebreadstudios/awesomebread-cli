@@ -26,8 +26,11 @@ public interface CommandOptions {
 
     String VERBOSE_FLAG = "--";
 
+    String LIST_DELIMITER = ",";
+
     Map<Class<?>, Function<String, Object>> SUPPORTED_TYPES = Map.of(
             String.class, string -> string,
+            List.class, string -> Arrays.stream(string.split(LIST_DELIMITER)).toList(),
             Integer.class, Integer::parseInt,
             int.class, Integer::parseInt,
             Boolean.class, Boolean::parseBoolean,
@@ -94,7 +97,7 @@ public interface CommandOptions {
                         val arg = args.get(i);
                         val field = fields.get(i);
                         field.setAccessible(true);
-                        assignObjectField(fields.get(i), object, SUPPORTED_TYPES.get(arg.getClass()).apply(arg));
+                        assignObjectField(fields.get(i), object, SUPPORTED_TYPES.get(field.getType()).apply(arg));
                     }
                 });
 
